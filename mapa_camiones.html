@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Rastreo de Camiones Ficticio</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZHevEztqrlkvoZq2URteV8fTBk4u5k0c"></script>
+    <style>
+      #map {
+        height: 100vh;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <script>
+      let map;
+      let markers = {};
+      let camionId = 1;
+
+      // Posición inicial
+      let camionPos = { lat: -34.6, lng: -58.4 };
+
+      function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: camionPos,
+          zoom: 8,
+        });
+
+        // Marcador inicial
+        markers[camionId] = new google.maps.Marker({
+          position: camionPos,
+          map: map,
+          title: "Camión Ficticio",
+        });
+
+        // Mover camión cada 2 segundos
+        setInterval(moveCamion, 2000);
+      }
+
+      function moveCamion() {
+        // Simular movimiento aleatorio
+        camionPos.lat += (Math.random() - 0.5) * 0.01;
+        camionPos.lng += (Math.random() - 0.5) * 0.01;
+
+        // Actualizar marcador
+        markers[camionId].setPosition(camionPos);
+
+        // Centrar mapa en el camión
+        map.panTo(camionPos);
+
+        // Opcional: enviar posición al backend simulado
+        // fetch('update_position.php', {
+        //     method: 'POST',
+        //     body: new URLSearchParams({
+        //         camion_id: camionId,
+        //         lat: camionPos.lat,
+        //         lng: camionPos.lng
+        //     })
+        // });
+      }
+
+      window.onload = initMap;
+    </script>
+  </body>
+</html>
